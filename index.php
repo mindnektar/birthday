@@ -10,7 +10,7 @@
     body {
         background: url(http://u.jimdo.com/www29/o/se01f125b569cd747/userlayout/img/default2.jpg?t=1336731342) no-repeat center;
         background-size: cover;
-        cursor: none;
+        cursor: crosshair;
         height: 100%;
         margin: 0;
         overflow: hidden;
@@ -18,41 +18,21 @@
     }
 
     #light {
-        background: url(light.png) no-repeat center;
-        background-size: cover;
+        background: url(bigflashlight.png) no-repeat 0 -200px;
+        background-size: 100% 100%;
         left: 50%;
-        height: 200px;
-        margin: -100px 0 0 -100px;
+        height: 4000px;
+        margin: -2000px 0 0 -2000px;
         position: absolute;
         top: 50%;
-        width: 200px;
+        width: 4000px;
     }
 
-    #left, #right, #top, #bottom, #overlay {
+    #overlay {
         background: #000;
         height: 100%;
         position: absolute;
         width: 100%;
-    }
-
-    #left {
-        left: 0;
-        top: 0;
-    }
-
-    #right {
-        right: 0;
-        top: 0;
-    }
-
-    #top {
-        left: 0;
-        top: 0;
-    }
-
-    #bottom {
-        left: 0;
-        bottom: 0;
     }
 </style>
 
@@ -62,19 +42,28 @@
         var $window = $(window),
             $overlay = $('#overlay'),
             $light = $('#light'),
-            $left = $('#left'),
-            $right = $('#right'),
-            $top = $('#top'),
-            $bottom = $('#bottom'),
+            $player = $('#player'),
 
-            lightSize = 200,
+            moveMap = {
+                37: [-1, 0],
+                38: [0, -1],
+                39: [1, 0],
+                40: [0, 1]
+            },
+            movement = {left: 0, top: 0},
+            pressed = {},
+            speed = 32,
+
             mousePos,
+            playerPos,
+            delta,
+            angle,
             winSize;
 
         (function init() {
             getWindowSize();
-            mousePos = {x: winSize.x / 2, y: winSize.y / 2};
-            positionDarkness();
+            playerPos = {left: winSize.x / 2, top: winSize.y / 2};
+            setPlayerPos();
 
             $overlay.fadeOut(3000);
 
@@ -84,57 +73,59 @@
                     y: e.pageY
                 };
 
-                $light.css({
-                    left: mousePos.x,
-                    top: mousePos.y
-                });
+                delta = {
+                    x: mousePos.x - playerPos.left,
+                    y: mousePos.y - playerPos.top
+                };
 
-                positionDarkness();
+                angle = Math.atan2(delta.y, delta.x) * 180 / Math.PI + 90;
+
+                $light.css({
+                    '-webkit-transform': 'rotate(' + angle + 'deg)'
+                });
             });
 
-            $window.click(function() {
-                resizeLight(lightSize + 50, {duration: 200});
+            $window.keydown(function(e) {
+                if (moveMap[e.which] && !pressed[e.which]) {
+                    pressed[e.which] = true;
+                }
+            });
+
+            $window.keyup(function(e) {
+                if (moveMap[e.which] && pressed[e.which]) {
+                    delete pressed[e.which];
+                }
             });
 
             $window.resize(getWindowSize);
+
+            (function frame() {
+                movement = {left: 0, top: 0};
+
+                $.each(pressed, function(key) {
+                    movement.left = moveMap[key][0] ? moveMap[key][0] * speed : movement.left;
+                    movement.top = moveMap[key][1] ? moveMap[key][1] * speed : movement.top;
+                });
+
+                playerPos.left += movement.left;
+                playerPos.top += movement.top;
+
+                setPlayerPos();
+
+                setTimeout(frame, 20);
+            })();
         })();
 
-        function positionDarkness() {
-            var offset = lightSize / 2 - 5;
+        function setPlayerPos() {
+            $player.css({
+                left: playerPos.left,
+                top: playerPos.top
+            });
 
-            $left.css('width', mousePos.x - offset > 0 ? mousePos.x - offset : 0);
-            $right.css('width', winSize.x - mousePos.x - offset > 0 ? winSize.x - mousePos.x - offset : 0);
-            $top.css('height', mousePos.y - offset > 0 ? mousePos.y - offset : 0);
-            $bottom.css('height', winSize.y - mousePos.y - offset > 0 ? winSize.y - mousePos.y - offset : 0);
-        }
-
-        function resizeLight(size, opts) {
-            var defaults = {
-                    duration: 2000,
-                    step: function() {
-                        lightSize = $light.width();
-                        positionDarkness();
-                    }
-                },
-                s;
-
-            s = $.extend(true, defaults, opts);
-
-            $light.animate({
-                height: size,
-                marginLeft: -size / 2,
-                marginTop: -size / 2,
-                width: size,
-                opacity: s.reveal ? 0 : 1
-            }, s);
-
-            if (s.reveal) {
-                $left.add($right).add($top).add($bottom).fadeOut(s.duration);
-            }
-        }
-
-        function reveal() {
-            resizeLight(winSize.x * 2, {reveal: true});
+            $light.css({
+                marginLeft: '+=' + movement.left,
+                marginTop: '+=' + movement.top
+            });
         }
 
         function getWindowSize() {
@@ -145,11 +136,7 @@
 
 </head>
 <body>
-<div id="left"></div>
-<div id="right"></div>
-<div id="top"></div>
-<div id="bottom"></div>
-
+<div id="player"></div>
 <div id="light"></div>
 
 <div id="overlay"></div>
