@@ -1,0 +1,122 @@
+html {
+    height: 100%;
+}
+
+body {
+    background: transparent no-repeat center;
+    background-size: cover;
+    color: #ddd;
+    cursor: none;
+    font-family: sans-serif;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+#light {
+    background: url(../pics/light.png) no-repeat center;
+    background-size: cover;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+}
+
+#left, #right, #top, #bottom, #overlay {
+    background: #000;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+
+#overlay {
+    cursor: auto;
+    display: none;
+}
+
+#overlay input {
+    background: #222;
+    border: 6px solid #ddd;
+    border-radius: 24px;
+    box-shadow: 0 0 13px rgba(0, 0, 0, .5) inset;
+    color: #ddd;
+    font-size: 60px;
+    height: 100px;
+    left: 50%;
+    margin: -50px 0 0 -300px;
+    outline: none;
+    position: absolute;
+    text-align: center;
+    text-transform: uppercase;
+    top: 50%;
+    width: 600px;
+}
+
+#left {
+    left: 0;
+    top: 0;
+}
+
+#right {
+    right: 0;
+    top: 0;
+}
+
+#top {
+    left: 0;
+    top: 0;
+}
+
+#bottom {
+    left: 0;
+    bottom: 0;
+}
+
+#timer {
+    font-size: 52px;
+    position: absolute;
+    right: 40px;
+    text-shadow: 0 0 10px #000;
+    top: 40px;
+}
+
+#end {
+    background: #000;
+    cursor: auto;
+    display: none;
+    font-size: 32px;
+    height: 100%;
+    line-height: 48px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+
+#endtext {
+    left: 25%;
+    position: absolute;
+    top: 100px;
+    width: 50%;
+}
+
+#endsolution {
+    bottom: 100px;
+    left: 50%;
+    margin-left: -386px;
+    position: absolute;
+    width: 772px;
+}
+
+#endsolution .letter {
+    background: #222;
+    border: none;
+    border-bottom: 6px solid #ddd;
+    color: #ddd;
+    font-size: 44px;
+    height: 80px;
+    margin-right: 12px;
+    outline: none;
+    text-align: center;
+    text-transform: uppercase;
+    width: 50px;
+}
