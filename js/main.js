@@ -11,7 +11,7 @@ $(function() {
         $timer = $('#timer'),
         $end = $('#end'),
 
-        puzzles = ['PAPAGEI', 'APFEL', 'NILPFERD', 'ZIEGE', 'EI', 'REIFEN', 'FLUGZEUG', 'AFFE', 'HOSE', 'ROSE', 'TENNISBALL'],
+        puzzles = ['PAPAGEI', 'APFEL', 'NILPFERD', 'ZIEGE', 'EI', 'RUCKSACK', 'FLUGZEUG', 'AFFE', 'HOSE', 'ROSE', 'TENNISBALL'],
 
         lightSize,
         mousePos,
