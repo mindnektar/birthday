@@ -53,6 +53,8 @@ $(function() {
                 clickBlock = true;
 
                 $overlay.show();
+                $input.show();
+
                 $input
                     .focus()
                     .keypress(function(e) {
@@ -61,6 +63,7 @@ $(function() {
                         }
 
                         $overlay.hide();
+                        $input.hide();
 
                         if ($input.val().toUpperCase() === puzzles[currentPuzzle]) {
                             timer.stop();
@@ -68,9 +71,11 @@ $(function() {
                             reveal();
 
                             setTimeout(function() {
-                                currentPuzzle++;
-                                nextPuzzle();
-                            }, 4000);
+                                $overlay.fadeIn(1000, function() {
+                                    currentPuzzle++;
+                                    nextPuzzle();
+                                });
+                            }, 3000);
                         } else {
                             clickBlock = false;
                         }
@@ -124,6 +129,8 @@ $(function() {
             done();
             return;
         }
+
+        $overlay.hide();
 
         clickBlock = false;
         lightSize = 5;
