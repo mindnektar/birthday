@@ -10,6 +10,8 @@ $(function() {
         $bottom = $('#bottom'),
         $timer = $('#timer'),
         $end = $('#end'),
+        $yep = $('#yep'),
+        $nope = $('#nope'),
 
         puzzles = ['PAPAGEI', 'APFEL', 'NILPFERD', 'ZIEGE', 'EI', 'RUCKSACK', 'FLUGZEUG', 'AFFE', 'HOSE', 'ROSE', 'TENNISBALL'],
 
@@ -18,7 +20,8 @@ $(function() {
         winSize,
         timer,
         currentPuzzle = 0,
-        clickBlock = false;
+        clickBlock = false,
+        enterBlock = true;
 
     (function init() {
         getWindowSize();
@@ -51,6 +54,7 @@ $(function() {
                 }
 
                 clickBlock = true;
+                enterBlock = false;
 
                 $overlay.show();
                 $input.show();
@@ -58,17 +62,25 @@ $(function() {
                 $input
                     .focus()
                     .keypress(function(e) {
-                        if (e.which !== 13) {
+                        if (e.which !== 13 || enterBlock) {
                             return;
                         }
 
+                        $nope.hide();
                         $overlay.hide();
                         $input.hide();
+                        enterBlock = true;
 
                         if ($input.val().toUpperCase() === puzzles[currentPuzzle]) {
                             timer.stop();
                             $light.stop();
                             reveal();
+
+                            $yep.show();
+
+                            setTimeout(function() {
+                                $yep.fadeOut(300);
+                            }, 1000);
 
                             setTimeout(function() {
                                 $overlay.fadeIn(1000, function() {
@@ -78,6 +90,12 @@ $(function() {
                             }, 3000);
                         } else {
                             clickBlock = false;
+
+                            $nope.show();
+
+                            setTimeout(function() {
+                                $nope.fadeOut(300);
+                            }, 1000);
                         }
 
                         $input.val('');

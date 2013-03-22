@@ -24,6 +24,9 @@
             <input type="text" />
         </div>
 
+        <div id="yep"></div>
+        <div id="nope"></div>
+
         <div id="timer"></div>
 
         <div id="end">

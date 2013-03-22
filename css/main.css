@@ -52,6 +52,25 @@ body {
     width: 600px;
 }
 
+#yep, #nope {
+    background: no-repeat center;
+    background-size: cover;
+    display: none;
+    height: 50px;
+    position: absolute;
+    right: 80px;
+    top: 110px;
+    width: 50px;
+}
+
+#yep {
+    background-image: url(../pics/yep.png);
+}
+
+#nope {
+    background-image: url(../pics/nope.png);
+}
+
 #left {
     left: 0;
     top: 0;
